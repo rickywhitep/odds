@@ -23,11 +23,11 @@
 <body>
     <h1>Kelly Criterion Calculator</h1>
     
-    <label for="odds">Betting Odds:</label>
-    <input type="number" id="odds" step="0.01" placeholder="Enter odds">
+    <label for="odds">Betting Odds (Decimal format):</label>
+    <input type="number" id="odds" placeholder="Enter odds" oninput="validity.valid||(value='');">
 
     <label for="percentage">Percentage of Occurrence:</label>
-    <input type="number" id="percentage" step="0.1" placeholder="Enter percentage">
+    <input type="number" id="percentage" placeholder="Enter percentage" oninput="validity.valid||(value='');">
 
     <button onclick="calculateKelly()">Calculate Kelly Criterion</button>
 
@@ -38,14 +38,19 @@
             var odds = parseFloat(document.getElementById('odds').value);
             var percentage = parseFloat(document.getElementById('percentage').value);
 
-            if (isNaN(odds) || isNaN(percentage) || odds <= 0 || percentage <= 0 || percentage > 100) {
+            if (isNaN(odds) || isNaN(percentage) || odds <= 1 || percentage <= 0 || percentage > 100) {
                 alert('Please enter valid values for odds and percentage.');
                 return;
             }
 
-            var kellyPercentage = ((odds * 0.01) - (1 - (percentage * 0.01))) / (odds - 1);
+            // Convert percentage to decimal
+            var p = percentage / 100;
+            var q = 1 - p;
 
-            document.getElementById('result').innerHTML = 'Optimal percentage of bankroll to bet: ' + (kellyPercentage * 100).toFixed(2) + '%';
+            // Calculate Kelly Criterion
+            var kellyFraction = (odds * p - q) / (odds - 1);
+
+            document.getElementById('result').innerHTML = 'Optimal fraction of bankroll to bet: ' + (kellyFraction * 100).toFixed(2) + '%';
         }
     </script>
 </body>
