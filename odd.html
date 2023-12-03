@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelly Criterion Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, button {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kelly Criterion Calculator</h1>
+    
+    <label for="odds">Betting Odds:</label>
+    <input type="number" id="odds" step="0.01" placeholder="Enter odds">
+
+    <label for="percentage">Percentage of Occurrence:</label>
+    <input type="number" id="percentage" step="0.1" placeholder="Enter percentage">
+
+    <button onclick="calculateKelly()">Calculate Kelly Criterion</button>
+
+    <p id="result"></p>
+
+    <script>
+        function calculateKelly() {
+            var odds = parseFloat(document.getElementById('odds').value);
+            var percentage = parseFloat(document.getElementById('percentage').value);
+
+            if (isNaN(odds) || isNaN(percentage) || odds <= 0 || percentage <= 0 || percentage > 100) {
+                alert('Please enter valid values for odds and percentage.');
+                return;
+            }
+
+            var kellyPercentage = ((odds * 0.01) - (1 - (percentage * 0.01))) / (odds - 1);
+
+            document.getElementById('result').innerHTML = 'Optimal percentage of bankroll to bet: ' + (kellyPercentage * 100).toFixed(2) + '%';
+        }
+    </script>
+</body>
+</html>
